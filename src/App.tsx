@@ -66,7 +66,14 @@ export function App() {
               return
             }
 
-            await loadTransactionsByEmployee(newValue.id)
+            // Check if the selected value is not an individual employee
+            if (newValue !== EMPTY_EMPLOYEE) {
+              await loadTransactionsByEmployee(newValue.id);
+            } else {
+              // Handle the case when "Empty Employee" is selected (optional)
+              // You may choose to load transactions for all employees or handle it differently
+              await loadAllTransactions();
+            }
           }}
         />
 
