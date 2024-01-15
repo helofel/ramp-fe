@@ -1,5 +1,5 @@
 import React from 'react';
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import { InputCheckbox } from "../InputCheckbox"
 import { TransactionPaneComponent } from "./types"
 
@@ -8,7 +8,15 @@ export const TransactionPane: TransactionPaneComponent = ({
   loading,
   setTransactionApproval: consumerSetTransactionApproval,
 }) => {
-  const [approved, setApproved] = useState(transaction.approved)
+  // const [approved, setApproved] = useState(transaction.approved)
+  const initialApproved = localStorage.getItem(`approved_${transaction.id}`);
+  const [approved, setApproved] = useState(initialApproved ? JSON.parse(initialApproved) : transaction.approved);
+
+  useEffect(() => {
+    // Save the approved state to localStorage whenever it changes
+    localStorage.setItem(`approved_${transaction.id}`, JSON.stringify(approved));
+  }, [transaction.id, approved]);
+
 
   return (
     <div className="RampPane">
